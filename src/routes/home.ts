@@ -24,7 +24,7 @@ homeRoute.get(
       next()
     },
     settings: {
-      level: "full"
+      level: "free"
     }
   })
 )
