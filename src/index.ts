@@ -19,9 +19,7 @@ app.use((req, _, next) => {
   }
   next()
 })
-
 app.use("/", router)
-
 app.use((req, _, next) => {
   req.meta.finish = new Date().getMilliseconds()
   console.log(
@@ -31,7 +29,6 @@ app.use((req, _, next) => {
   )
   next()
 })
-
 httpServer.listen(application.port, async () => {
   console.log(
     `Api "${application.name}" running on: ${application.host}:${application.port}`
