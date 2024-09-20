@@ -1,7 +1,8 @@
 import { z } from "zod"
 export const authenticationValidation = z.object({
   login: z.string(),
-  senha: z.string()
+  senha: z.string(),
+  notifyToken: z.string()
 })
 
 export type authenticationControllerProps = z.input<

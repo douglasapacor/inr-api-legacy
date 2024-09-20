@@ -1,9 +1,11 @@
+//#region Imports
 import { createHash } from "crypto"
 import { sign } from "jsonwebtoken"
 import type UserRepository from "../repositories/User"
 import type { authenticationServiceProps } from "../schema/login"
 import type { defaultResponse } from "../types"
 import application from "../../config/application"
+//#endregion Imports
 
 export default class UserService {
   constructor(private userRepository: UserRepository) {}
