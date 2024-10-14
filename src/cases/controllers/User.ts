@@ -1,7 +1,7 @@
 import {
   authenticationValidation,
   type authenticationControllerProps
-} from "../schema/login"
+} from "../schemas/login"
 import type UserService from "../services/User"
 import type { defaultResponse } from "../types"
 

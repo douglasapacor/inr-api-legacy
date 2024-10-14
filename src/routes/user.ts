@@ -16,8 +16,7 @@ userRoute.post(
       res.status(200).json(
         await userController.authentication({
           login: req.body.login,
-          senha: req.body.senha,
-          notifyToken: req.body.notifyToken
+          senha: req.body.senha
         })
       )
 
