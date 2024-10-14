@@ -1,4 +1,4 @@
--- Active: 1725460851901@@inrpublicacoes.mysql.dbaas.com.br@3306@inrpublicacoes
+-- Active: 1728923473005@@inrpublicacoes.mysql.dbaas.com.br@3306@inrpublicacoes
 DROP PROCEDURE IF EXISTS get_home_me;
 
 CREATE PROCEDURE get_home_me (
