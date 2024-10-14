@@ -3,11 +3,16 @@ import wrapper from "../lib/wrapper"
 import JurisprudenceController from "../cases/controllers/Jurisprudence"
 import JurisprudenceService from "../cases/services/Jurisprudence"
 import JurisprudenceRepository from "../cases/repositories/Jurisprudence"
+import ClientProductRepository from "../cases/repositories/ClientProduct"
 
 const jurisprudenceRoute = express.Router()
 
+const clientProductRepository = new ClientProductRepository()
 const jurisprudenceRepository = new JurisprudenceRepository()
-const jurisprudenceService = new JurisprudenceService(jurisprudenceRepository)
+const jurisprudenceService = new JurisprudenceService(
+  jurisprudenceRepository,
+  clientProductRepository
+)
 const jurisprudenceController = new JurisprudenceController(
   jurisprudenceService
 )
@@ -36,13 +41,14 @@ jurisprudenceRoute.get(
     handle: async (req, res, next) => {
       res.status(200).json(
         await jurisprudenceController.getJurisprudenceById({
-          id: +req.params.id
+          id: +req.params.id,
+          client: req.user.idcliente
         })
       )
       next()
     },
     settings: {
-      level: "free"
+      level: "full"
     }
   })
 )
