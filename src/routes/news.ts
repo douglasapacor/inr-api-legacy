@@ -28,4 +28,22 @@ newsRoute.get(
   })
 )
 
+newsRoute.get(
+  "/:id",
+  wrapper({
+    handle: async (req, res, next) => {
+      res.status(200).json(
+        await newsController.getNewsById({
+          id: +req.params.id
+        })
+      )
+
+      next()
+    },
+    settings: {
+      level: "free"
+    }
+  })
+)
+
 export default newsRoute

@@ -24,4 +24,30 @@ export default class NewsRepository extends Repository {
       throw new Error(error.message)
     }
   }
+
+  async getNewsById(params: { id: number }): Promise<
+    {
+      idnoticia: number
+      titulo: string
+      chamada: string
+      fonte: string
+      texto: string
+      comentario: string
+      datacad: string
+    }[]
+  > {
+    try {
+      return await this.many<{
+        idnoticia: number
+        titulo: string
+        chamada: string
+        fonte: string
+        texto: string
+        comentario: string
+        datacad: string
+      }>("get_news_by_id", `'${params.id}'`)
+    } catch (error: any) {
+      throw new Error(error.message)
+    }
+  }
 }
