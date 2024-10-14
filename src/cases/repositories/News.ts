@@ -1,16 +1,14 @@
 import { Repository } from "../types"
 
 export default class NewsRepository extends Repository {
-  async getNews(params: { limit: number; page: number }): Promise<
-    {
-      idnoticia: number
-      titulo: string
-      fonte: string
-      datacad: string
-    }[]
-  > {
+  async getNews(params: { limit: number; page: number }): Promise<{
+    idnoticia: number
+    titulo: string
+    fonte: string
+    datacad: string
+  } | null> {
     try {
-      return await this.many<{
+      return await this.procedure<{
         idnoticia: number
         titulo: string
         fonte: string
@@ -25,19 +23,17 @@ export default class NewsRepository extends Repository {
     }
   }
 
-  async getNewsById(params: { id: number }): Promise<
-    {
-      idnoticia: number
-      titulo: string
-      chamada: string
-      fonte: string
-      texto: string
-      comentario: string
-      datacad: string
-    }[]
-  > {
+  async getNewsById(params: { id: number }): Promise<{
+    idnoticia: number
+    titulo: string
+    chamada: string
+    fonte: string
+    texto: string
+    comentario: string
+    datacad: string
+  } | null> {
     try {
-      return await this.many<{
+      return await this.procedure<{
         idnoticia: number
         titulo: string
         chamada: string
