@@ -4,9 +4,7 @@ import JurisprudenceController from "../cases/controllers/Jurisprudence"
 import JurisprudenceService from "../cases/services/Jurisprudence"
 import JurisprudenceRepository from "../cases/repositories/Jurisprudence"
 import ClientProductRepository from "../cases/repositories/ClientProduct"
-
 const jurisprudenceRoute = express.Router()
-
 const clientProductRepository = new ClientProductRepository()
 const jurisprudenceRepository = new JurisprudenceRepository()
 const jurisprudenceService = new JurisprudenceService(

@@ -3,7 +3,6 @@ import UserRepository from "../cases/repositories/User"
 import UserService from "../cases/services/User"
 import UserController from "../cases/controllers/User"
 import wrapper from "../lib/wrapper"
-
 const userRoute = express.Router()
 const userRepository = new UserRepository()
 const userService = new UserService(userRepository)
@@ -19,7 +18,6 @@ userRoute.post(
           senha: req.body.senha
         })
       )
-
       next()
     },
     settings: {

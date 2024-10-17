@@ -4,7 +4,6 @@ import NewsController from "../cases/controllers/News"
 import NewsService from "../cases/services/News"
 import NewsRepository from "../cases/repositories/News"
 const newsRoute = express.Router()
-
 const newsRepository = new NewsRepository()
 const newsService = new NewsService(newsRepository)
 const newsController = new NewsController(newsService)
