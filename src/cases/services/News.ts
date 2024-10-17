@@ -15,6 +15,7 @@ export default class NewsService {
         transporter.push({
           id: response[i].idnoticia,
           tipo: "news",
+          label: "Notícia",
           titulo: response[i].titulo,
           fonte: response[i].fonte,
           datacad: response[i].datacad
@@ -32,7 +33,22 @@ export default class NewsService {
   async getNewsById(params: getNewsByIdServiceProps): Promise<defaultResponse> {
     try {
       const response = await this.newsRepository.getNewsById(params)
-      return { success: true, data: response }
+
+      if (!response) throw new Error("Notícia não encontrada.")
+
+      return {
+        success: true,
+        data: {
+          id: response.idnoticia,
+          label: "Notícia",
+          titulo: response.titulo,
+          chamada: response.chamada,
+          fonte: response.fonte,
+          texto: response.texto,
+          comentario: response.comentario,
+          datacad: response.datacad
+        }
+      }
     } catch (error: any) {
       return {
         success: false,
