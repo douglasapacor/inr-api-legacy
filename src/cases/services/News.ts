@@ -40,6 +40,7 @@ export default class NewsService {
         success: true,
         data: {
           id: response.idnoticia,
+          tipo: "news",
           label: "Notícia",
           titulo: response.titulo,
           chamada: response.chamada,

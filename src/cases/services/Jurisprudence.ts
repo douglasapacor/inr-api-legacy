@@ -20,6 +20,21 @@ export default class JurisprudenceService {
       const response = await this.jurisprudenceRepository.jurisprudenceHome(
         params
       )
+
+      let transporter = []
+
+      for (let i = 0; i < response.length; i++) {
+        transporter.push({
+          id: response[i].idjurisprudencia,
+          label: "Jurisprudência",
+          tipo: "jurisprudence",
+          titulo: response[i].titulo,
+          ementa: response[i].ementa,
+          img: response[i].img,
+          datacad: response[i].datacad
+        })
+      }
+
       return {
         success: true,
         data: response
@@ -52,9 +67,24 @@ export default class JurisprudenceService {
         id: params.id
       })
 
+      if (!response) throw new Error("Jurisprudência não encontrada.")
+
       return {
         success: true,
-        data: response
+        data: {
+          id: response.idjurisprudencia,
+          label: "Jurisprudência",
+          tipo: "jurisprudence",
+          titulo: response.titulo,
+          ementa: response.ementa,
+          resumo: response.resumo,
+          ato: response.ato,
+          comentario: response.comentario,
+          numero_ato: response.numero_ato,
+          dados_processo: response.dados_processo,
+          inteiro_teor: response.inteiro_teor,
+          datacad: response.datacad
+        }
       }
     } catch (error: any) {
       return {
