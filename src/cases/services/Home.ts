@@ -44,6 +44,7 @@ export default class HomeService {
                   links[y].tipo === "CO" &&
                   links[y].id === dataTransporter[k].id
                 ) {
+                  links[y].tipo = "courses"
                   links[y].label = "Cursos"
                   if (!links[y].content) links[y].content = []
 
@@ -58,12 +59,14 @@ export default class HomeService {
             break
           case "NO":
             dataTransporter = await this.homeRepository.getNO(list[i][1])
+
             for (let y = 0; y < links.length; y++) {
               for (let k = 0; k < dataTransporter.length; k++) {
                 if (
                   links[y].tipo === "NO" &&
                   links[y].id === dataTransporter[k].id
                 ) {
+                  links[y].tipo = "news"
                   links[y].label = "Notícias"
                   if (!links[y].content) links[y].content = []
 
@@ -85,6 +88,7 @@ export default class HomeService {
                   links[y].tipo === "JR" &&
                   links[y].id === dataTransporter[k].id
                 ) {
+                  links[y].tipo = "jurisprudence"
                   links[y].label = "Jurisprudência"
                   if (!links[y].content) links[y].content = []
 
@@ -106,6 +110,7 @@ export default class HomeService {
                   links[y].tipo === "LG" &&
                   links[y].id === dataTransporter[k].id
                 ) {
+                  links[y].tipo = "legislation"
                   links[y].label = "Legislação"
                   if (!links[y].content) links[y].content = []
 
@@ -127,6 +132,7 @@ export default class HomeService {
                   links[y].tipo === "OP" &&
                   links[y].id === dataTransporter[k].id
                 ) {
+                  links[y].tipo = "opinion"
                   links[y].label = "Opnião"
                   if (!links[y].content) links[y].content = []
 
@@ -148,7 +154,8 @@ export default class HomeService {
                   links[y].tipo === "PA" &&
                   links[y].id === dataTransporter[k].id
                 ) {
-                  links[y].label = "Pereceres CGJ SP"
+                  links[y].tipo = "pareceres"
+                  links[y].label = "Pareceres CGJ SP"
                   if (!links[y].content) links[y].content = []
 
                   dataTransporter[
@@ -169,6 +176,7 @@ export default class HomeService {
                   links[y].tipo === "PR" &&
                   links[y].id === dataTransporter[k].id
                 ) {
+                  links[y].tipo = "questions-answers"
                   links[y].label = "Perguntas e Respostas"
                   if (!links[y].content) links[y].content = []
 
@@ -190,6 +198,7 @@ export default class HomeService {
                   links[y].tipo === "ME" &&
                   links[y].id === dataTransporter[k].id
                 ) {
+                  links[y].tipo = "messages-editors"
                   links[y].label = "Mensagens dos Editores"
                   if (!links[y].content) links[y].content = []
 
@@ -211,6 +220,7 @@ export default class HomeService {
                   links[y].tipo === "CLPR" &&
                   links[y].id === dataTransporter[k].id
                 ) {
+                  links[y].tipo = "classifiers-pr"
                   links[y].label = "Clasificadores PR"
                   if (!links[y].content) links[y].content = []
 
@@ -232,6 +242,7 @@ export default class HomeService {
                   links[y].tipo === "CLRS" &&
                   links[y].id === dataTransporter[k].id
                 ) {
+                  links[y].tipo = "classifiers-rs"
                   links[y].label = "Clasificadores RS"
                   if (!links[y].content) links[y].content = []
 
@@ -253,6 +264,7 @@ export default class HomeService {
                   links[y].tipo === "CLSP" &&
                   links[y].id === dataTransporter[k].id
                 ) {
+                  links[y].tipo = "classifiers-sp"
                   links[y].label = "Clasificadores SP"
                   if (!links[y].content) links[y].content = []
 
@@ -274,6 +286,7 @@ export default class HomeService {
                   links[y].tipo === "TV" &&
                   links[y].id === dataTransporter[k].id
                 ) {
+                  links[y].tipo = "tv"
                   links[y].label = "TV INR"
                   if (!links[y].content) links[y].content = []
 

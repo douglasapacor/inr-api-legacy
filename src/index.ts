@@ -19,7 +19,7 @@ app.use((req, _, next) => {
   }
   next()
 })
-app.use("/", router)
+app.use("/legacy", router)
 app.use((req, _, next) => {
   req.meta.finish = new Date().getMilliseconds()
   console.log(
