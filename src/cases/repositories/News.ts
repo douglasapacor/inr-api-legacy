@@ -1,14 +1,16 @@
 import { Repository } from "../types"
 
 export default class NewsRepository extends Repository {
-  async getNews(params: { limit: number; page: number }): Promise<{
-    idnoticia: number
-    titulo: string
-    fonte: string
-    datacad: string
-  } | null> {
+  async getNews(params: { limit: number; page: number }): Promise<
+    {
+      idnoticia: number
+      titulo: string
+      fonte: string
+      datacad: string
+    }[]
+  > {
     try {
-      return await this.procedure<{
+      return await this.many<{
         idnoticia: number
         titulo: string
         fonte: string

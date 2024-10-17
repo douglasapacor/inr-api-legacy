@@ -8,8 +8,19 @@ export default class NewsService {
 
   async newsHome(params: newsHomeServiceProps): Promise<defaultResponse> {
     try {
+      let transporter = []
       const response = await this.newsRepository.getNews(params)
-      return { success: true, data: response }
+
+      for (let i = 0; i < response.length; i++) {
+        transporter.push({
+          id: response[i].idnoticia,
+          tipo: "news",
+          titulo: response[i].titulo,
+          fonte: response[i].fonte,
+          datacad: response[i].datacad
+        })
+      }
+      return { success: true, data: transporter }
     } catch (error: any) {
       return {
         success: false,
