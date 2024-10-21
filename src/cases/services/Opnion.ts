@@ -34,7 +34,7 @@ export default class OpinionService {
 
       return {
         success: true,
-        data: response
+        data: transporter
       }
     } catch (error: any) {
       return {
@@ -72,6 +72,8 @@ export default class OpinionService {
         success: true,
         data: {
           id: response.id,
+          label: "Opnião",
+          tipo: "opinion",
           titulo: response.titulo,
           texto: response.texto,
           introducao: response.introducao,
