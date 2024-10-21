@@ -2,8 +2,18 @@ import express from "express"
 import OpinionService from "../cases/services/Opnion"
 import OpinionController from "../cases/controllers/Opnion"
 import wrapper from "../lib/wrapper"
+import OpinionRepository from "../cases/repositories/Opnion"
+import ClientProductRepository from "../cases/repositories/ClientProduct"
+import AuthorsRepository from "../cases/repositories/Authors"
 const opinionRoute = express.Router()
-const opinionService = new OpinionService()
+const opinionRepository = new OpinionRepository()
+const clientProductRepository = new ClientProductRepository()
+const authorsRepository = new AuthorsRepository()
+const opinionService = new OpinionService(
+  opinionRepository,
+  clientProductRepository,
+  authorsRepository
+)
 const opinionController = new OpinionController(opinionService)
 
 opinionRoute.get(

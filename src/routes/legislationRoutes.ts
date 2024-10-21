@@ -2,8 +2,15 @@ import express from "express"
 import wrapper from "../lib/wrapper"
 import LegislationService from "../cases/services/Legislation"
 import LegislationController from "../cases/controllers/Legislation"
+import LegislationRepository from "../cases/repositories/Legislation"
+import ClientProductRepository from "../cases/repositories/ClientProduct"
 const legislationRoute = express.Router()
-const legislationService = new LegislationService()
+const legislationRepository = new LegislationRepository()
+const clientProductRepository = new ClientProductRepository()
+const legislationService = new LegislationService(
+  legislationRepository,
+  clientProductRepository
+)
 const legislationController = new LegislationController(legislationService)
 
 legislationRoute.get(

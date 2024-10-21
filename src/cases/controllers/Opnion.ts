@@ -39,7 +39,7 @@ export default class OpinionController {
       if (!validation.success)
         throw new Error(validation.error.issues[0].message)
 
-      return await this.opinionService.OpinionById(validation.data)
+      return await this.opinionService.opinionById(validation.data)
     } catch (error: any) {
       return {
         success: false,
