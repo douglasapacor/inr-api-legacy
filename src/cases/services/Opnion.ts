@@ -10,7 +10,7 @@ export default class OpinionService {
     private opinionRepository: OpinionRepository,
     private clinetProductRepository: ClientProductRepository,
     private authorsRepository: AuthorsRepository
-  ) {}
+  ) { }
 
   async opinionContent(
     params: opnionHomeServiceProps
@@ -28,7 +28,8 @@ export default class OpinionService {
           titulo: response[i].titulo,
           resumo: response[i].resumo,
           data_registro: response[i].data_registro,
-          datacad: response[i].datacad
+          datacad: response[i].datacad,
+          autores: await this.authorsRepository.getAuthorsByIdOpinion({ id: response[i].id })
         })
       }
 
@@ -46,41 +47,65 @@ export default class OpinionService {
 
   async opinionById(params: opnionByIdServiceProps): Promise<defaultResponse> {
     try {
-      const validation = await this.clinetProductRepository.getClientProduct({
-        client: params.client,
-        product: 1
-      })
+      if (params.client) {
+        const validation = await this.clinetProductRepository.getClientProduct({
+          client: params.client,
+          product: 1
+        })
 
-      if (!validation || validation.idproduto !== 1) {
-        return {
-          success: false,
-          message: "Não autorizado"
+        if (!validation || validation.idproduto !== 1) {
+          return {
+            success: false,
+            message: "Não autorizado"
+          }
         }
-      }
 
-      const response = await this.opinionRepository.getOpinionById({
-        id: params.id
-      })
+        const response = await this.opinionRepository.getOpinionById({
+          id: params.id
+        })
 
-      if (!response) throw new Error("Opnião não encontrada.")
+        if (!response) throw new Error("Opnião não encontrada.")
 
-      const authors = await this.authorsRepository.getAuthorsByIdOpinion({
-        id: response.id
-      })
+        const authors = await this.authorsRepository.getAuthorsByIdOpinion({
+          id: response.id
+        })
 
-      return {
-        success: true,
-        data: {
-          id: response.id,
-          label: "Opnião",
-          tipo: "opinion",
-          titulo: response.titulo,
-          texto: response.texto,
-          introducao: response.introducao,
-          img: response.img,
-          comentario: response.comentario,
-          datacad: response.datacad,
-          autores: authors
+        return {
+          success: true,
+          data: {
+            id: response.id,
+            label: "Opinião",
+            tipo: "opinion",
+            titulo: response.titulo,
+            texto: response.texto,
+            img: response.img,
+            comentario: response.comentario,
+            datacad: response.datacad,
+            autores: authors
+          }
+        }
+      } else {
+        const freeOpinion = await this.opinionRepository.getOpinionById({
+          id: params.id
+        })
+
+        if (!freeOpinion) throw new Error("Opnião não encontrada.")
+
+        const authors = await this.authorsRepository.getAuthorsByIdOpinion({
+          id: freeOpinion.id
+        })
+
+        return {
+          success: true,
+          data: {
+            id: freeOpinion.id,
+            label: "Opinião",
+            tipo: "opinion",
+            titulo: freeOpinion.titulo,
+            introducao: freeOpinion.introducao,
+            datacad: freeOpinion.datacad,
+            autores: authors
+          }
         }
       }
     } catch (error: any) {

@@ -13,9 +13,28 @@ export default function wrapper(attr: attributes) {
       if (attr.settings.level === "free")
         return await attr.handle(req, res, next)
 
-      if (!req.headers["authorization"]) throw new Error("Não autorizado")
-
       let user: typeof req.user | null = null
+
+
+
+      if (attr.settings.level === "controlled") {
+        if (req.headers["authorization"]) {
+          try {
+            user = verify(
+              req.headers["authorization"],
+              application.key
+            ) as typeof req.user
+          } catch (error: any) {
+            throw new Error("Não autorizado")
+          }
+
+          req.user = user;
+        }
+
+        return await attr.handle(req, res, next)
+      }
+
+      if (!req.headers["authorization"]) throw new Error("Não autorizado")
 
       try {
         user = verify(

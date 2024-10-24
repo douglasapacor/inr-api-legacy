@@ -41,13 +41,13 @@ opinionRoute.get(
       res.status(200).json(
         await opinionController.getOpinionById({
           id: +req.params.id,
-          client: req.user.idcliente
+          client: req.user ? req.user.idcliente : null
         })
       )
       next()
     },
     settings: {
-      level: "full"
+      level: "controlled"
     }
   })
 )

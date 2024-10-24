@@ -5,9 +5,9 @@ export default class AuthorsRepository extends Repository {
     foto: string
     nome: string
     curriculo: string
-  } | null> {
+  }[]> {
     try {
-      return await this.procedure<{
+      return await this.many<{
         foto: string
         nome: string
         curriculo: string
