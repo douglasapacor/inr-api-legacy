@@ -2,8 +2,15 @@ import express from "express"
 import PareceresService from "../cases/services/Pareceres"
 import PareceresController from "../cases/controllers/Pareceres"
 import wrapper from "../lib/wrapper"
+import PareceresRepository from "../cases/repositories/Pareceres"
+import ClientProductRepository from "../cases/repositories/ClientProduct"
 const pareceresRouter = express.Router()
-const pareceresService = new PareceresService()
+const pareceresRepository = new PareceresRepository()
+const clientProductRepository = new ClientProductRepository()
+const pareceresService = new PareceresService(
+  pareceresRepository,
+  clientProductRepository
+)
 const pareceresController = new PareceresController(pareceresService)
 
 pareceresRouter.get(
@@ -12,7 +19,7 @@ pareceresRouter.get(
     handle: async (req, res, next) => {
       res.status(200).json(
         await pareceresController.pareceresContent({
-          limit: req.query.limit ? +req.query.limit : 12,
+          limit: req.query.limit ? +req.query.limit : 10,
           page: req.query.page ? +req.query.page : 0
         })
       )
@@ -31,13 +38,13 @@ pareceresRouter.get(
       res.status(200).json(
         await pareceresController.getPareceresById({
           id: +req.params.id,
-          client: req.user.idcliente
+          client: req.user ? req.user.idcliente : null
         })
       )
       next()
     },
     settings: {
-      level: "full"
+      level: "controlled"
     }
   })
 )
