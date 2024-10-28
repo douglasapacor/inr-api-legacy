@@ -54,6 +54,8 @@ export default class MessagesEditorsService {
           success: true,
           data: {
             id: msg.id,
+            label: "Mensagens dos Editores",
+            tipo: "messages-editors",
             titulo: msg.titulo,
             texto: msg.texto,
             datacad: msg.datacad
@@ -64,6 +66,8 @@ export default class MessagesEditorsService {
           success: true,
           data: {
             id: msg.id,
+            label: "Mensagens dos Editores",
+            tipo: "messages-editors",
             titulo: msg.titulo,
             chamada: msg.chamada,
             datacad: msg.datacad
