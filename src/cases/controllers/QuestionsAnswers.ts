@@ -6,7 +6,7 @@ import {
   questionsAnswersHomeControllerProps,
   questionsAnswersHomeValidation
 } from "../schemas/questionsAnswersHome"
-import QuestionsAnswersService from "../services/questionsAnswers"
+import QuestionsAnswersService from "../services/QuestionsAnswers"
 import { defaultResponse } from "../types"
 
 export default class QuestionsAnswersController {
