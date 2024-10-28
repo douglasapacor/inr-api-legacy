@@ -15,8 +15,6 @@ export default function wrapper(attr: attributes) {
 
       let user: typeof req.user | null = null
 
-
-
       if (attr.settings.level === "controlled") {
         if (req.headers["authorization"]) {
           try {
@@ -28,9 +26,9 @@ export default function wrapper(attr: attributes) {
             throw new Error("Não autorizado")
           }
 
-          req.user = user;
+          req.user = user
+          req.user.logged = true
         }
-
         return await attr.handle(req, res, next)
       }
 

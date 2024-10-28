@@ -1,9 +1,13 @@
 import express from "express"
-import MessagesEditorsService from "../cases/services/messagesEditors"
-import MessagesEditorsController from "../cases/controllers/messagesEditors"
+import MessagesEditorsService from "../cases/services/MessagesEditors"
+import MessagesEditorsController from "../cases/controllers/MessagesEditors"
 import wrapper from "../lib/wrapper"
+import MessagesEditorRepository from "../cases/repositories/MessagesEditor"
 const messagesEditorsRoute = express.Router()
-const messagesEditorsService = new MessagesEditorsService()
+const messagesEditorRepository = new MessagesEditorRepository()
+const messagesEditorsService = new MessagesEditorsService(
+  messagesEditorRepository
+)
 const messagesEditorsController = new MessagesEditorsController(
   messagesEditorsService
 )
@@ -14,7 +18,7 @@ messagesEditorsRoute.get(
     handle: async (req, res, next) => {
       res.status(200).json(
         await messagesEditorsController.messagesEditorsContent({
-          limit: req.query.limit ? +req.query.limit : 12,
+          limit: req.query.limit ? +req.query.limit : 10,
           page: req.query.page ? +req.query.page : 0
         })
       )
@@ -33,14 +37,15 @@ messagesEditorsRoute.get(
       res.status(200).json(
         await messagesEditorsController.getMessagesEditorsById({
           id: +req.params.id,
-          client: req.user.idcliente
+          client: req.user ? req.user.idcliente : null
         })
       )
       next()
     },
     settings: {
-      level: "full"
+      level: "controlled"
     }
   })
 )
+
 export default messagesEditorsRoute
