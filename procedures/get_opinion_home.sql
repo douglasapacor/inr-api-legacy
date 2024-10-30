@@ -7,8 +7,8 @@ BEGIN
         o.idopiniao AS "id",
         o.titulo,
         o.resumo,
-        DATE_FORMAT(datacad, '%d/%m/%Y') AS data_registro,
-        o.datacad
+        DATE_FORMAT(o.datacad, '%d/%m/%Y') AS data_registro,
+        DATE_FORMAT(o.datacad, '%d/%m/%Y') AS datacad
     FROM
         opiniao o
     WHERE
