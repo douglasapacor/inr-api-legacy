@@ -25,7 +25,7 @@ export default class PareceresService {
           tipo: "pareceres",
           numero_processo: response[i].numero_processo,
           ano_processo: response[i].ano_processo,
-          ementa: response[i].ementa,
+          titulo: response[i].ementa,
           datacad: response[i].datacad
         })
       }
@@ -68,7 +68,7 @@ export default class PareceresService {
             ano_processo: parecer.ano_processo,
             numero_parecer: parecer.numero_parecer,
             ano_parecer: parecer.ano_parecer,
-            ementa: parecer.ementa
+            titulo: parecer.ementa
           }
         }
       } else {

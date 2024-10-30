@@ -1,6 +1,6 @@
 import express from "express"
-import ClassifiersSpService from "../cases/services/classifiersSp"
-import ClassifiersSpController from "../cases/controllers/classifiersSp"
+import ClassifiersSpService from "../cases/services/ClassifiersSp"
+import ClassifiersSpController from "../cases/controllers/ClassifiersSp"
 import wrapper from "../lib/wrapper"
 const classifiersspRoute = express.Router()
 const classifiersSpService = new ClassifiersSpService()

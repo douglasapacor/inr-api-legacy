@@ -1,11 +1,11 @@
 import {
   legislationByIdControllerProps,
   legislationByIdValidation
-} from "../schemas/LegislationById"
+} from "../schemas/legislationById"
 import {
   legislationHomeControllerProps,
   legislationHomeValidation
-} from "../schemas/LegislationHome"
+} from "../schemas/legislationHome"
 import LegislationService from "../services/Legislation"
 import { defaultResponse } from "../types"
 
