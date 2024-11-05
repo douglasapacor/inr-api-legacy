@@ -8,7 +8,7 @@ CREATE PROCEDURE get_jurisprudence_home (
 )
 BEGIN
     SELECT
-	idjurisprudencia,
+	idjurisprudencia AS 'id',
 	titulo,
 	ementa,
 	img,
