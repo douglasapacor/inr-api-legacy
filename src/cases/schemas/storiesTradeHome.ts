@@ -11,6 +11,7 @@ export const storiesTradeHomeValidation = z.object({
 export type storiesTradeHomeControllerProps = z.input<
   typeof storiesTradeHomeValidation
 >
+
 export type storiesTradeHomeServiceProps = z.output<
   typeof storiesTradeHomeValidation
 >

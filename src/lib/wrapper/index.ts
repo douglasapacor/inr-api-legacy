@@ -27,8 +27,8 @@ export default function wrapper(attr: attributes) {
           }
 
           req.user = user
-          req.user.logged = true
         }
+
         return await attr.handle(req, res, next)
       }
 
@@ -46,6 +46,7 @@ export default function wrapper(attr: attributes) {
       if (!user) throw new Error("Não autorizado")
 
       req.user = user
+      req.user.logged = true
 
       return await attr.handle(req, res, next)
     } catch (error: any) {

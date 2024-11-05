@@ -1,6 +1,6 @@
 import express from "express"
-import StoriesTradeService from "../cases/services/storiesTrade"
-import StoriesTradeController from "../cases/controllers/storiesTrade"
+import StoriesTradeService from "../cases/services/StoriesTrade"
+import StoriesTradeController from "../cases/controllers/StoriesTrade"
 import wrapper from "../lib/wrapper"
 const storiesTradeRoute = express.Router()
 const storiesTradeService = new StoriesTradeService()
@@ -41,4 +41,5 @@ storiesTradeRoute.get(
     }
   })
 )
+
 export default storiesTradeRoute

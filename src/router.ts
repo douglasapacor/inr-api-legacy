@@ -13,6 +13,7 @@ import classifirsrsRoutes from "./routes/classifiersrsRoutes"
 import classifirsspRoutes from "./routes/classifiersspRoutes"
 import storiesTradeRoutes from "./routes/storiesTradeRoutes"
 import descriptionRoute from "./routes/descriptionRoutes"
+import supplementsRoutes from "./routes/supplementsRoutes"
 
 const router = express.Router()
 
@@ -30,5 +31,6 @@ router.use("/classifiers-rs", classifirsrsRoutes)
 router.use("/classifiers-sp", classifirsspRoutes)
 router.use("/stories-trade", storiesTradeRoutes)
 router.use("/description", descriptionRoute)
+router.use("/supplements", supplementsRoutes)
 
 export default router
