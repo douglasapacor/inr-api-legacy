@@ -25,7 +25,7 @@ export default class JurisprudenceService {
 
       for (let i = 0; i < response.length; i++) {
         transporter.push({
-          id: response[i].idjurisprudencia,
+          id: response[i].id,
           label: "Jurisprudência",
           tipo: "jurisprudence",
           titulo: response[i].titulo,
@@ -72,7 +72,7 @@ export default class JurisprudenceService {
       return {
         success: true,
         data: {
-          id: response.idjurisprudencia,
+          id: response.id,
           label: "Jurisprudência",
           tipo: "jurisprudence",
           titulo: response.titulo,

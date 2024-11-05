@@ -3,7 +3,7 @@ import { Repository } from "../types"
 export default class JurisprudenceRepository extends Repository {
   async jurisprudenceHome(params: { limit: number; page: number }): Promise<
     {
-      idjurisprudencia: number
+      id: number
       titulo: string
       ementa: string
       img: string
@@ -12,7 +12,7 @@ export default class JurisprudenceRepository extends Repository {
   > {
     try {
       return await this.many<{
-        idjurisprudencia: number
+        id: number
         titulo: string
         ementa: string
         img: string
@@ -28,7 +28,7 @@ export default class JurisprudenceRepository extends Repository {
   }
 
   async getJurisprudenceById(params: { id: number }): Promise<{
-    idjurisprudencia: number
+    id: number
     titulo: string
     ementa: string
     resumo: string
@@ -41,7 +41,7 @@ export default class JurisprudenceRepository extends Repository {
   } | null> {
     try {
       return await this.procedure<{
-        idjurisprudencia: number
+        id: number
         titulo: string
         ementa: string
         resumo: string

@@ -6,7 +6,7 @@ CREATE PROCEDURE get_jurisprudence_by_id (
 )
 BEGIN
     SELECT
-        idjurisprudencia,
+        idjurisprudencia AS 'id',
         titulo,
         ementa,
         resumo,
