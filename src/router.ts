@@ -8,9 +8,7 @@ import opinionRoutes from "./routes/opinionRoutes"
 import questionsAnswersRoutes from "./routes/questionsAnswersRoutes"
 import messagesEditorsRoutes from "./routes/messagesEditorsRoutes"
 import pareceresRoutes from "./routes/pareceresRoutes"
-import classifirsprRoutes from "./routes/classifiersprRoutes"
-import classifirsrsRoutes from "./routes/classifiersrsRoutes"
-import classifirsspRoutes from "./routes/classifiersspRoutes"
+import classifirsRoutes from "./routes/classifiersRoutes"
 import storiesTradeRoutes from "./routes/storiesTradeRoutes"
 import descriptionRoute from "./routes/descriptionRoutes"
 import supplementsRoutes from "./routes/supplementsRoutes"
@@ -26,9 +24,7 @@ router.use("/opinion", opinionRoutes)
 router.use("/questions-answers", questionsAnswersRoutes)
 router.use("/messages-editors", messagesEditorsRoutes)
 router.use("/pareceres", pareceresRoutes)
-router.use("/classifiers-pr", classifirsprRoutes)
-router.use("/classifiers-rs", classifirsrsRoutes)
-router.use("/classifiers-sp", classifirsspRoutes)
+router.use("/classifiers", classifirsRoutes)
 router.use("/stories-trade", storiesTradeRoutes)
 router.use("/description", descriptionRoute)
 router.use("/supplements", supplementsRoutes)
