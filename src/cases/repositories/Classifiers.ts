@@ -59,4 +59,24 @@ export default class ClassifiersRepository extends Repository {
       throw new Error(error.message)
     }
   }
+
+  async getById(params: { idclassificador: number }): Promise<{
+    id: number
+    idestado: number
+    sigla: string
+    datacad: string
+    titulo: string
+  } | null> {
+    try {
+      return this.procedure<{
+        id: number
+        idestado: number
+        sigla: string
+        datacad: string
+        titulo: string
+      }>("get_classifiers_by_id", `${params.idclassificador}`)
+    } catch (error: any) {
+      throw new Error(error.message)
+    }
+  }
 }

@@ -1,4 +1,4 @@
--- Active: 1729782705461@@inrpublicacoes.mysql.dbaas.com.br@3306
+-- Active: 1728923473005@@inrpublicacoes.mysql.dbaas.com.br@3306@inrpublicacoes
 
 DROP PROCEDURE IF EXISTS get_barra_by_classifier_by_id;
 

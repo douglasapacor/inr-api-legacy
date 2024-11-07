@@ -1,5 +1,10 @@
+import ActsRepository from "../repositories/Acts"
+import AttachmentRepository from "../repositories/Attachment"
+import BarRepository from "../repositories/Bar"
 import ClassifiersRepository from "../repositories/Classifiers"
 import ClientProductRepository from "../repositories/ClientProduct"
+import DepartamentRepository from "../repositories/Departament"
+import OrganRepository from "../repositories/Organ"
 import { getClassifiersByIdServiceProps } from "../schemas/getClassifiersById"
 import { getClassifiersByStateIdServiceProps } from "../schemas/getClassifiersByStateId"
 import { stateByTitleServiceProps } from "../schemas/stateByTitle"
@@ -8,14 +13,21 @@ import { defaultResponse } from "../types"
 export default class ClassifiersService {
   constructor(
     private classifiersRepository: ClassifiersRepository,
-    private clientProductRepository: ClientProductRepository
-  ) { }
+    private clientProductRepository: ClientProductRepository,
+    private barsRepository: BarRepository,
+    private organRepository: OrganRepository,
+    private departamentRepository: DepartamentRepository,
+    private actsRepository: ActsRepository,
+    private attachmentRepository: AttachmentRepository
+  ) {}
 
   async getStateByTitle(
     params: stateByTitleServiceProps
   ): Promise<defaultResponse> {
     try {
-      const response = await this.classifiersRepository.getStateClassifiers({ silga: params.state })
+      const response = await this.classifiersRepository.getStateClassifiers({
+        silga: params.state
+      })
 
       if (!response) throw new Error("Estado não cadastrado.")
 
@@ -36,16 +48,18 @@ export default class ClassifiersService {
   ): Promise<defaultResponse> {
     try {
       const response = await this.classifiersRepository.getClassifiersByState({
-        idestado: params.id, limit: params.limit, page: params.page
+        idestado: params.id,
+        limit: params.limit,
+        page: params.page
       })
 
       const state = await this.classifiersRepository.getClassifiersStateById({
         idestado: params.id
       })
 
-      if (!state) throw new Error("Estado não encontrado.");
+      if (!state) throw new Error("Estado não encontrado.")
 
-      let transporter = [];
+      let transporter = []
 
       for (let i = 0; i < response.length; i++) {
         transporter.push({
@@ -73,19 +87,81 @@ export default class ClassifiersService {
     params: getClassifiersByIdServiceProps
   ): Promise<defaultResponse> {
     try {
-      if (params.client) {
-        const validation = await this.clientProductRepository.getClientProduct({
-          client: params.client,
-          product: 1
+      const classifier = await this.classifiersRepository.getById({
+        idclassificador: params.id
+      })
+
+      if (!classifier) throw new Error("Classificador não encontrado.")
+
+      const bars = await this.barsRepository.getBarByClassifiersId({
+        classifiersid: params.id
+      })
+
+      if (bars.length <= 0)
+        throw new Error("Erro ao selecionar Barra do classificador.")
+
+      const barParams: number[] = []
+      for (let i = 0; i < bars.length; i++) {
+        barParams.push(bars[i].idbarra)
+      }
+
+      const organs = await this.organRepository.getOrgansByBars({
+        bars: barParams
+      })
+
+      if (organs.length <= 0)
+        throw new Error("Erro ao selecionar Orgãos do classificador.")
+
+      const organsParams: number[] = []
+      for (let i = 0; i < organs.length; i++) {
+        organsParams.push(organs[i].idbarra_orgao)
+      }
+
+      const departaments =
+        await this.departamentRepository.getDepartamentByOrgansId({
+          organs: organsParams
         })
 
-        if (!validation || validation.idproduto !== 1) {
-          return {
-            success: false,
-            message: "Não autorizado"
-          }
+      if (departaments.length <= 0)
+        throw new Error("Erro ao selecionar Departamentos do classificador.")
+
+      const departamentParams: number[] = []
+      for (let i = 0; i < departaments.length; i++) {
+        departamentParams.push(departaments[i].iddepartamento)
+      }
+
+      const acts = await this.actsRepository.getActsByDepartamentsId({
+        departaments: departamentParams
+      })
+
+      if (acts.length <= 0)
+        throw new Error("Erro ao selecionar Atos do classificador.")
+
+      const actsParams: number[] = []
+      for (let i = 0; i < acts.length; i++) {
+        actsParams.push(acts[i].idato)
+      }
+
+      const attachments = await this.attachmentRepository.getAttachmentByActsId(
+        {
+          acts: actsParams
         }
-      } else throw new Error("Não autorizado.");
+      )
+
+      // if (params.client) {
+      //   const validation = await this.clientProductRepository.getClientProduct({
+      //     client: params.client,
+      //     product: 1
+      //   })
+
+      //   if (!validation || validation.idproduto !== 1) {
+      //     return {
+      //       success: false,
+      //       message: "Não autorizado"
+      //     }
+      //   }
+      // } else {
+      // }
 
       return {
         success: true

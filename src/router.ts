@@ -9,7 +9,6 @@ import questionsAnswersRoutes from "./routes/questionsAnswersRoutes"
 import messagesEditorsRoutes from "./routes/messagesEditorsRoutes"
 import pareceresRoutes from "./routes/pareceresRoutes"
 import classifirsRoutes from "./routes/classifiersRoutes"
-import storiesTradeRoutes from "./routes/storiesTradeRoutes"
 import descriptionRoute from "./routes/descriptionRoutes"
 import supplementsRoutes from "./routes/supplementsRoutes"
 
@@ -25,7 +24,6 @@ router.use("/questions-answers", questionsAnswersRoutes)
 router.use("/messages-editors", messagesEditorsRoutes)
 router.use("/pareceres", pareceresRoutes)
 router.use("/classifiers", classifirsRoutes)
-router.use("/stories-trade", storiesTradeRoutes)
 router.use("/description", descriptionRoute)
 router.use("/supplements", supplementsRoutes)
 

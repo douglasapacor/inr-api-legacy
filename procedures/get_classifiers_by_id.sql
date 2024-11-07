@@ -1,4 +1,4 @@
--- Active: 1729782705461@@inrpublicacoes.mysql.dbaas.com.br@3306
+-- Active: 1728923473005@@inrpublicacoes.mysql.dbaas.com.br@3306@inrpublicacoes
 
 DROP PROCEDURE IF EXISTS get_classifiers_by_id;
 
@@ -20,19 +20,20 @@ BEGIN
     barra b,
     barra_orgao o
   WHERE
-      c.exc = 'N'
+    c.exc = 'N'
     AND 
-      a.exc = 'N'
+        a.exc = 'N'
     AND 
-      a.iddepartamento = d.iddepartamento
+        a.iddepartamento = d.iddepartamento
     AND
-      d.idbarra_orgao = o.idbarra_orgao
+        d.idbarra_orgao = o.idbarra_orgao
     AND
-      o.idbarra = b.idbarra
+        o.idbarra = b.idbarra
     AND 
-      b.idclassificador = c.idclassificador
+        b.idclassificador = c.idclassificador
     AND
-      c.idclassificador = classificadorid
+        c.idclassificador = classificadorid
     AND
-      c.idestado = e.idestado;
+        c.idestado = e.idestado
+  LIMIT 1;
 END;

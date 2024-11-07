@@ -1,21 +1,28 @@
-get_attached_by_act
--- Active: 1729782705461@@inrpublicacoes.mysql.dbaas.com.br@3306
+-- Active: 1728923473005@@inrpublicacoes.mysql.dbaas.com.br@3306@inrpublicacoes
 DROP PROCEDURE IF EXISTS get_attached_by_act;
 
 CREATE PROCEDURE get_attached_by_act (
-  actid INT
+  actid VARCHAR(500)
 )
 BEGIN
-  SELECT
-    idanexo,
-    nome,
-    arquivo
+  SET @sql = CONCAT('
+    SELECT
+      idato,
+      idanexo,
+      nome,
+      arquivo
+    FROM
+      anexo_ato
+    WHERE
+      exc = "N"
+      AND idato IN (', actid,')
+    ORDER BY
+      idanexo DESC
+    LIMIT 1;
+  ');
+  PREPARE stmt
   FROM
-    anexo_ato
-  WHERE
-    exc = 'N'
-    AND idato = actid
-  ORDER BY
-    idanexo DESC
-  LIMIT 1;
+  @sql;
+  EXECUTE stmt;
+  DEALLOCATE PREPARE stmt;
 END;
