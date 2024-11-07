@@ -1,7 +1,6 @@
 import ClientProductRepository from "../repositories/ClientProduct"
 import JurisprudenceRepository from "../repositories/Jurisprudence"
 import {
-  getJurisprudenceByIdControllerProps,
   getJurisprudenceByIdServiceProps
 } from "../schemas/getJurisprudenceById"
 import { jurisprudenceHomeServiceProps } from "../schemas/jurisprudenceHome"
@@ -10,8 +9,8 @@ import { defaultResponse } from "../types"
 export default class JurisprudenceService {
   constructor(
     private jurisprudenceRepository: JurisprudenceRepository,
-    private clinetProductRepository: ClientProductRepository
-  ) {}
+    private clientProductRepository: ClientProductRepository
+  ) { }
 
   async jurisprudenceContent(
     params: jurisprudenceHomeServiceProps
@@ -51,7 +50,7 @@ export default class JurisprudenceService {
     params: getJurisprudenceByIdServiceProps
   ): Promise<defaultResponse> {
     try {
-      const validation = await this.clinetProductRepository.getClientProduct({
+      const validation = await this.clientProductRepository.getClientProduct({
         client: params.client,
         product: 1
       })

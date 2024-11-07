@@ -1,6 +1,22 @@
 import { Repository } from "../types"
 
 export default class ClassifiersRepository extends Repository {
+  async getClassifiersStateById(params: { idestado: number }): Promise<{
+    idestado: number
+    titulo: string
+    banner: string
+  } | null> {
+    try {
+      return await this.procedure<{
+        idestado: number
+        titulo: string
+        banner: string
+      }>("get_classifiers_state_by_id", `'${params.idestado}'`)
+    } catch (error: any) {
+      throw new Error(error.message)
+    }
+  }
+
   async getStateClassifiers(params: { silga: string }): Promise<{
     idestado: number
     titulo: string
