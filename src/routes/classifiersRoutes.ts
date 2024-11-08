@@ -83,7 +83,7 @@ classifiersRoute.get(
       next()
     },
     settings: {
-      level: "free"
+      level: "controlled"
     }
   })
 )
