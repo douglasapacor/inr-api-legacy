@@ -1,7 +1,7 @@
 import {
-  getClassifiersByIdControllerProps,
-  getClassifiersByIdValidation
-} from "../schemas/getClassifiersById"
+  getClassifiersIndexByIdControllerProps,
+  getClassifiersIndexByIdValidation
+} from "../schemas/getClassifiersIndexById"
 import {
   getClassifiersByStateIdControllerProps,
   getClassifiersByStateIdValidation
@@ -12,6 +12,10 @@ import {
 } from "../schemas/stateByTitle"
 import ClassifiersService from "../services/Classifiers"
 import { defaultResponse } from "../types"
+import {
+  getClassifiersContentByIdControllerProps,
+  getClassifiersContentByIdValidation
+} from "../schemas/getClassifiersContentById"
 
 export default class ClassifiersController {
   constructor(private classifiersService: ClassifiersService) {}
@@ -54,18 +58,41 @@ export default class ClassifiersController {
     }
   }
 
-  async getClassifiersById(
-    params: getClassifiersByIdControllerProps
+  async getClassifiersIndexById(
+    params: getClassifiersIndexByIdControllerProps
   ): Promise<defaultResponse> {
     try {
-      const validation = await getClassifiersByIdValidation.safeParseAsync(
+      const validation = await getClassifiersIndexByIdValidation.safeParseAsync(
         params
       )
 
       if (!validation.success)
         throw new Error(validation.error.issues[0].message)
 
-      return await this.classifiersService.getClassifiersById(validation.data)
+      return await this.classifiersService.getClassifiersIndexById(
+        validation.data
+      )
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message
+      }
+    }
+  }
+
+  async getClassifiersContentById(
+    params: getClassifiersContentByIdControllerProps
+  ): Promise<defaultResponse> {
+    try {
+      const validation =
+        await getClassifiersContentByIdValidation.safeParseAsync(params)
+
+      if (!validation.success)
+        throw new Error(validation.error.issues[0].message)
+
+      return await this.classifiersService.getClassifiersContentById(
+        validation.data
+      )
     } catch (error: any) {
       return {
         success: false,

@@ -31,24 +31,6 @@ const classifiersService = new ClassifiersService(
 
 const classifiersController = new ClassifiersController(classifiersService)
 
-classifiersRoute.get(
-  "/state",
-  wrapper({
-    handle: async (req, res, next) => {
-      res.status(200).json(
-        await classifiersController.getStateByTitle({
-          state: req.query.state as "SP" | "PR" | "RS"
-        })
-      )
-
-      next()
-    },
-    settings: {
-      level: "free"
-    }
-  })
-)
-
 classifiersRoute.post(
   "/",
   wrapper({
@@ -70,11 +52,47 @@ classifiersRoute.post(
 )
 
 classifiersRoute.get(
-  "/:id",
+  "/state",
   wrapper({
     handle: async (req, res, next) => {
       res.status(200).json(
-        await classifiersController.getClassifiersById({
+        await classifiersController.getStateByTitle({
+          state: req.query.acronym as "SP" | "PR" | "RS"
+        })
+      )
+
+      next()
+    },
+    settings: {
+      level: "free"
+    }
+  })
+)
+
+classifiersRoute.get(
+  "/index/:id",
+  wrapper({
+    handle: async (req, res, next) => {
+      res.status(200).json(
+        await classifiersController.getClassifiersIndexById({
+          id: +req.params.id
+        })
+      )
+
+      next()
+    },
+    settings: {
+      level: "free"
+    }
+  })
+)
+
+classifiersRoute.get(
+  "/content/:id/read",
+  wrapper({
+    handle: async (req, res, next) => {
+      res.status(200).json(
+        await classifiersController.getClassifiersContentById({
           id: +req.params.id,
           client: req.user ? req.user.idcliente : null
         })
@@ -83,7 +101,7 @@ classifiersRoute.get(
       next()
     },
     settings: {
-      level: "controlled"
+      level: "full"
     }
   })
 )
