@@ -17,7 +17,7 @@ const supplementsService = new SupplementsService(
 const supplementsController = new SupplementsController(supplementsService)
 
 supplementsRoutes.get(
-  "/themes",
+  "/themes/list",
   wrapper({
     handle: async (req, res, next) => {
       res.status(200).json(await supplementsController.getSupplementsThemes())

@@ -59,6 +59,7 @@ export default class SupplementsService {
           datacad_fmt: response[i].datacad_fmt
         })
       }
+
       return {
         success: true,
         data: transporter
