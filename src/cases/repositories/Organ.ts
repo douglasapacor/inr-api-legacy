@@ -14,4 +14,17 @@ export default class OrganRepository extends Repository {
       throw new Error(`organ -:${error.message}`)
     }
   }
+
+  async getOrganByBar(params: {
+    bars: number
+  }): Promise<{ idbarra_orgao: number; titulo: string }[]> {
+    try {
+      return await this.many<{
+        idbarra_orgao: number
+        titulo: string
+      }>("get_organ_by_bar_id", `'${params.bars}'`)
+    } catch (error: any) {
+      throw new Error(`organ -: ${error.message}`)
+    }
+  }
 }

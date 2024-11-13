@@ -23,8 +23,7 @@ export default class LegislationService {
           id: response[i].id,
           label: "Legislação",
           tipo: "legislation",
-          titulo: response[i].titulo,
-          resumo: response[i].resumo,
+          titulo: `${response[i].titulo} – ${response[i].resumo}`,
           datacad: response[i].datacad
         })
       }

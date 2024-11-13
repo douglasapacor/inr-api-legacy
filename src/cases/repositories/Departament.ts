@@ -18,4 +18,20 @@ export default class DepartamentRepository extends Repository {
       throw new Error(`departament -:${error.message}`)
     }
   }
+
+  async getDepartamentByOrgan(params: { organ: number }): Promise<
+    {
+      iddepartamento: number
+      nome: string
+    }[]
+  > {
+    try {
+      return await this.many<{
+        iddepartamento: number
+        nome: string
+      }>("get_departament_by_organ", `'${params.organ}'`)
+    } catch (error: any) {
+      throw new Error(`departament -: ${error.message}`)
+    }
+  }
 }

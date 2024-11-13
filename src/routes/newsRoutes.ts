@@ -15,7 +15,7 @@ newsRoute.get(
       res.status(200).json(
         await newsController.newsHome({
           page: req.query.page ? +req.query.page : 0,
-          limit: req.query.limit ? +req.query.limit : 10
+          limit: req.query.limit ? +req.query.limit : 12
         })
       )
 

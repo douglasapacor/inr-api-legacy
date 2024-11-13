@@ -80,7 +80,7 @@ export default class ClassifiersController {
     }
   }
 
-  async getClassifiersContentById(
+  async getClassifiersBars(
     params: getClassifiersContentByIdControllerProps
   ): Promise<defaultResponse> {
     try {
@@ -90,9 +90,89 @@ export default class ClassifiersController {
       if (!validation.success)
         throw new Error(validation.error.issues[0].message)
 
-      return await this.classifiersService.getClassifiersContentById(
+      return await this.classifiersService.getBarsByClassifierId(
         validation.data
       )
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message
+      }
+    }
+  }
+
+  async getClassifierOrgan(
+    params: getClassifiersContentByIdControllerProps
+  ): Promise<defaultResponse> {
+    try {
+      const validation =
+        await getClassifiersContentByIdValidation.safeParseAsync(params)
+
+      if (!validation.success)
+        throw new Error(validation.error.issues[0].message)
+
+      return await this.classifiersService.getOrgansByBarId(validation.data)
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message
+      }
+    }
+  }
+
+  async getClassifierDepartament(
+    params: getClassifiersContentByIdControllerProps
+  ): Promise<defaultResponse> {
+    try {
+      const validation =
+        await getClassifiersContentByIdValidation.safeParseAsync(params)
+
+      if (!validation.success)
+        throw new Error(validation.error.issues[0].message)
+
+      return await this.classifiersService.getDepartamentByOrganId(
+        validation.data
+      )
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message
+      }
+    }
+  }
+
+  async getClassifierAct(
+    params: getClassifiersContentByIdControllerProps
+  ): Promise<defaultResponse> {
+    try {
+      const validation =
+        await getClassifiersContentByIdValidation.safeParseAsync(params)
+
+      if (!validation.success)
+        throw new Error(validation.error.issues[0].message)
+
+      return await this.classifiersService.getActsByDepartamentId(
+        validation.data
+      )
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message
+      }
+    }
+  }
+
+  async getClassifierContent(
+    params: getClassifiersContentByIdControllerProps
+  ): Promise<defaultResponse> {
+    try {
+      const validation =
+        await getClassifiersContentByIdValidation.safeParseAsync(params)
+
+      if (!validation.success)
+        throw new Error(validation.error.issues[0].message)
+
+      return await this.classifiersService.getActText(validation.data)
     } catch (error: any) {
       return {
         success: false,

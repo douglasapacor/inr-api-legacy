@@ -34,4 +34,46 @@ export default class ActsRepository extends Repository {
       throw new Error(`act -:${error.message}`)
     }
   }
+
+  async getActsByDepartamentId(params: { departament: number }): Promise<
+    {
+      idato: number
+      titulo: string
+      ancora: string
+      secao: string
+      especie: string
+      numero: string
+      vara: string
+      comarca: string
+      datacad: string
+    }[]
+  > {
+    try {
+      return await this.many<{
+        idato: number
+        titulo: string
+        ancora: string
+        secao: string
+        especie: string
+        numero: string
+        vara: string
+        comarca: string
+        datacad: string
+      }>("get_acts_by_departament_id", `'${params.departament}'`)
+    } catch (error: any) {
+      throw new Error(`act -: ${error.message}`)
+    }
+  }
+
+  async getActText(params: { act: number }): Promise<{
+    texto: string
+  } | null> {
+    try {
+      return await this.procedure<{
+        texto: string
+      }>("get_acts_text", `'${params.act}'`)
+    } catch (error: any) {
+      throw new Error(`act -: ${error.message}`)
+    }
+  }
 }

@@ -10,7 +10,7 @@ export default class OpinionService {
     private opinionRepository: OpinionRepository,
     private clinetProductRepository: ClientProductRepository,
     private authorsRepository: AuthorsRepository
-  ) { }
+  ) {}
 
   async opinionContent(
     params: opnionHomeServiceProps
@@ -21,15 +21,21 @@ export default class OpinionService {
       let transporter = []
 
       for (let i = 0; i < response.length; i++) {
+        const autores = await this.authorsRepository.getAuthorsByIdOpinion({
+          id: response[i].id
+        })
+
         transporter.push({
           id: response[i].id,
           label: "Opnião",
           tipo: "opinion",
-          titulo: response[i].titulo,
+          titulo: `${response[i].titulo} – ${autores
+            .map(i => i.nome)
+            .join(", ")}`,
           resumo: response[i].resumo,
           data_registro: response[i].data_registro,
           datacad: response[i].datacad,
-          autores: await this.authorsRepository.getAuthorsByIdOpinion({ id: response[i].id })
+          autores: autores
         })
       }
 

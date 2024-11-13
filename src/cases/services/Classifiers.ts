@@ -6,10 +6,11 @@ import ClassifiersRepository from "../repositories/Classifiers"
 import ClientProductRepository from "../repositories/ClientProduct"
 import DepartamentRepository from "../repositories/Departament"
 import OrganRepository from "../repositories/Organ"
-import { getClassifiersByIdServiceProps } from "../schemas/getClassifiersIndexById"
+import { getClassifiersIndexByIdServiceProps } from "../schemas/getClassifiersIndexById"
 import { getClassifiersByStateIdServiceProps } from "../schemas/getClassifiersByStateId"
 import { stateByTitleServiceProps } from "../schemas/stateByTitle"
 import { defaultResponse } from "../types"
+import { getClassifiersContentByIdServiceProps } from "../schemas/getClassifiersContentById"
 
 export default class ClassifiersService {
   constructor(
@@ -85,7 +86,7 @@ export default class ClassifiersService {
   }
 
   async getClassifiersIndexById(
-    params: getClassifiersByIdServiceProps
+    params: getClassifiersIndexByIdServiceProps
   ): Promise<defaultResponse> {
     try {
       const classifier = await this.classifiersRepository.getById({
@@ -149,65 +150,65 @@ export default class ClassifiersService {
         }
       )
 
-      let index: any = classifier
-      index.barra = {}
+      const barraArray = []
 
-      for (let i = 0; i < bars.length; i++) {
-        index.barra[bars[i].idbarra] = {
-          titulo: bars[i].titulo,
-          img: bars[i].img,
-          cor: bars[i].cor,
-          ordem: bars[i].ordem,
-          orgao: {}
-        }
+      for (const bar of bars) {
+        const orgaoArray = []
 
-        for (let ii = 0; ii < organs.length; ii++) {
-          index.barra[bars[i].idbarra].orgao[organs[ii].idbarra_orgao] = {
-            titulo: organs[ii].titulo,
-            departamento: {}
-          }
+        for (const organ of organs) {
+          if (organ.idbarra === bar.idbarra) {
+            const departamentoArray = []
 
-          for (let iii = 0; iii < departaments.length; iii++) {
-            index.barra[bars[i].idbarra].orgao[
-              organs[ii].idbarra_orgao
-            ].departamento[departaments[iii].iddepartamento] = {
-              nome: departaments[iii].nome,
-              atos: {}
-            }
+            for (const departament of departaments) {
+              if (departament.idbarra_orgao === organ.idbarra_orgao) {
+                const atosArray = []
 
-            for (let iv = 0; iv < acts.length; iv++) {
-              index.barra[bars[i].idbarra].orgao[
-                organs[ii].idbarra_orgao
-              ].departamento[departaments[iii].iddepartamento].atos[
-                acts[iv].idato
-              ] = {
-                iddepartamento: acts[iv].iddepartamento,
-                titulo: acts[iv].titulo,
-                ancora: acts[iv].ancora,
-                secao: acts[iv].secao,
-                especie: acts[iv].especie,
-                numero: acts[iv].numero,
-                vara: acts[iv].vara,
-                comarca: acts[iv].comarca,
-                datacad: acts[iv].datacad,
-                anexos: {}
-              }
+                for (const act of acts) {
+                  if (act.iddepartamento === departament.iddepartamento) {
+                    const anexosArray = attachments
+                      .filter(attachment => attachment.idato === act.idato)
+                      .map(attachment => ({
+                        idato: attachment.idato,
+                        idanexo: attachment.idanexo,
+                        nome: attachment.nome,
+                        arquivo: attachment.arquivo
+                      }))
 
-              for (let v = 0; v < attachments.length; v++) {
-                index.barra[bars[i].idbarra].orgao[
-                  organs[ii].idbarra_orgao
-                ].departamento[departaments[iii].iddepartamento].atos[
-                  acts[iv].idato
-                ].anexos[attachments[v].idanexo] = attachments
+                    atosArray.push({
+                      id: act.idato,
+                      titulo: act.titulo,
+                      ancora: act.ancora,
+                      anexos: anexosArray
+                    })
+                  }
+                }
+
+                departamentoArray.push({
+                  id: departament.iddepartamento,
+                  nome: departament.nome,
+                  atos: atosArray
+                })
               }
             }
+
+            orgaoArray.push({
+              id: organ.idbarra_orgao,
+              titulo: organ.titulo,
+              departamento: departamentoArray
+            })
           }
         }
+
+        barraArray.push({
+          id: bar.idbarra,
+          titulo: bar.titulo,
+          orgao: orgaoArray
+        })
       }
 
       return {
         success: true,
-        data: index
+        data: { ...classifier, barra: barraArray }
       }
     } catch (error: any) {
       return {
@@ -217,71 +218,10 @@ export default class ClassifiersService {
     }
   }
 
-  async getClassifiersContentById(
-    params: getClassifiersByIdServiceProps
+  async getBarsByClassifierId(
+    params: getClassifiersContentByIdServiceProps
   ): Promise<defaultResponse> {
     try {
-      const classifier = await this.classifiersRepository.getById({
-        idclassificador: params.id
-      })
-
-      if (!classifier) throw new Error("Classificador não encontrado.")
-
-      const bars = await this.barsRepository.getBarByClassifiersId({
-        classifiersid: params.id
-      })
-
-      if (bars.length <= 0)
-        throw new Error("Erro ao selecionar Barra do classificador.")
-
-      const barParams: number[] = []
-      for (let i = 0; i < bars.length; i++) {
-        barParams.push(bars[i].idbarra)
-      }
-
-      const organs = await this.organRepository.getOrgansByBars({
-        bars: barParams
-      })
-
-      if (organs.length <= 0)
-        throw new Error("Erro ao selecionar Orgãos do classificador.")
-
-      const organsParams: number[] = []
-      for (let i = 0; i < organs.length; i++) {
-        organsParams.push(organs[i].idbarra_orgao)
-      }
-
-      const departaments =
-        await this.departamentRepository.getDepartamentByOrgansId({
-          organs: organsParams
-        })
-
-      if (departaments.length <= 0)
-        throw new Error("Erro ao selecionar Departamentos do classificador.")
-
-      const departamentParams: number[] = []
-      for (let i = 0; i < departaments.length; i++) {
-        departamentParams.push(departaments[i].iddepartamento)
-      }
-
-      const acts = await this.actsRepository.getActsByDepartamentsId({
-        departaments: departamentParams
-      })
-
-      if (acts.length <= 0)
-        throw new Error("Erro ao selecionar Atos do classificador.")
-
-      const actsParams: number[] = []
-      for (let i = 0; i < acts.length; i++) {
-        actsParams.push(acts[i].idato)
-      }
-
-      const attachments = await this.attachmentRepository.getAttachmentByActsId(
-        {
-          acts: actsParams
-        }
-      )
-
       if (params.client) {
         const validation = await this.clientProductRepository.getClientProduct({
           client: params.client,
@@ -295,71 +235,233 @@ export default class ClassifiersService {
           }
         }
 
-        let content: any = classifier
-        content.barra = {}
+        const bars = await this.barsRepository.getBarByClassifiersId({
+          classifiersid: params.id
+        })
+
+        if (bars.length <= 0)
+          throw new Error("Erro ao selecionar barra do classificador.")
+
+        const transporter = []
 
         for (let i = 0; i < bars.length; i++) {
-          content.barra[bars[i].idbarra] = {
+          transporter.push({
+            idbarra: bars[i].idbarra,
             titulo: bars[i].titulo,
             img: bars[i].img,
             cor: bars[i].cor,
-            ordem: bars[i].ordem,
-            orgao: {}
-          }
-
-          for (let ii = 0; ii < organs.length; ii++) {
-            content.barra[bars[i].idbarra].orgao[organs[ii].idbarra_orgao] = {
-              titulo: organs[ii].titulo,
-              departamento: {}
-            }
-
-            for (let iii = 0; iii < departaments.length; iii++) {
-              content.barra[bars[i].idbarra].orgao[
-                organs[ii].idbarra_orgao
-              ].departamento[departaments[iii].iddepartamento] = {
-                nome: departaments[iii].nome,
-                atos: {}
-              }
-
-              for (let iv = 0; iv < acts.length; iv++) {
-                content.barra[bars[i].idbarra].orgao[
-                  organs[ii].idbarra_orgao
-                ].departamento[departaments[iii].iddepartamento].atos[
-                  acts[iv].idato
-                ] = {
-                  iddepartamento: acts[iv].iddepartamento,
-                  titulo: acts[iv].titulo,
-                  texto: acts[iv].texto,
-                  ancora: acts[iv].ancora,
-                  secao: acts[iv].secao,
-                  especie: acts[iv].especie,
-                  numero: acts[iv].numero,
-                  vara: acts[iv].vara,
-                  comarca: acts[iv].comarca,
-                  datacad: acts[iv].datacad,
-                  anexos: {}
-                }
-
-                for (let v = 0; v < attachments.length; v++) {
-                  content.barra[bars[i].idbarra].orgao[
-                    organs[ii].idbarra_orgao
-                  ].departamento[departaments[iii].iddepartamento].atos[
-                    acts[iv].idato
-                  ].anexos[attachments[v].idanexo] = attachments
-                }
-              }
-            }
-          }
+            ordem: bars[i].ordem
+          })
         }
 
         return {
           success: true,
-          data: content
+          data: transporter
         }
       } else {
         return {
-          success: false,
-          message: "Não Autorizado."
+          success: true,
+          data: {}
+        }
+      }
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message
+      }
+    }
+  }
+
+  async getOrgansByBarId(
+    params: getClassifiersContentByIdServiceProps
+  ): Promise<defaultResponse> {
+    try {
+      if (params.client) {
+        const validation = await this.clientProductRepository.getClientProduct({
+          client: params.client,
+          product: 1
+        })
+
+        if (!validation || validation.idproduto !== 1) {
+          return {
+            success: false,
+            message: "Não Autorizado."
+          }
+        }
+
+        const organs = await this.organRepository.getOrganByBar({
+          bars: params.id
+        })
+
+        console.log(organs)
+
+        return {
+          success: true,
+          data: organs
+        }
+      } else {
+        return {
+          success: true,
+          data: {}
+        }
+      }
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message
+      }
+    }
+  }
+
+  async getDepartamentByOrganId(
+    params: getClassifiersContentByIdServiceProps
+  ): Promise<defaultResponse> {
+    try {
+      if (params.client) {
+        const validation = await this.clientProductRepository.getClientProduct({
+          client: params.client,
+          product: 1
+        })
+
+        if (!validation || validation.idproduto !== 1) {
+          return {
+            success: false,
+            message: "Não Autorizado."
+          }
+        }
+
+        const departament =
+          await this.departamentRepository.getDepartamentByOrgan({
+            organ: params.id
+          })
+
+        return {
+          success: true,
+          data: departament
+        }
+      } else {
+        return {
+          success: true,
+          data: {}
+        }
+      }
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message
+      }
+    }
+  }
+
+  async getActsByDepartamentId(
+    params: getClassifiersContentByIdServiceProps
+  ): Promise<defaultResponse> {
+    try {
+      if (params.client) {
+        const validation = await this.clientProductRepository.getClientProduct({
+          client: params.client,
+          product: 1
+        })
+
+        if (!validation || validation.idproduto !== 1) {
+          return {
+            success: false,
+            message: "Não Autorizado."
+          }
+        }
+
+        const departament = await this.actsRepository.getActsByDepartamentId({
+          departament: params.id
+        })
+
+        return {
+          success: true,
+          data: departament
+        }
+      } else {
+        return {
+          success: true,
+          data: {}
+        }
+      }
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message
+      }
+    }
+  }
+
+  async getActText(
+    params: getClassifiersContentByIdServiceProps
+  ): Promise<defaultResponse> {
+    try {
+      if (params.client) {
+        const validation = await this.clientProductRepository.getClientProduct({
+          client: params.client,
+          product: 1
+        })
+
+        if (!validation || validation.idproduto !== 1) {
+          return {
+            success: false,
+            message: "Não Autorizado."
+          }
+        }
+
+        const act = await this.actsRepository.getActText({
+          act: params.id
+        })
+
+        if (!act) throw new Error("Ato não encontrado.")
+
+        return {
+          success: true,
+          data: act.texto
+        }
+      } else {
+        return {
+          success: true,
+          data: {}
+        }
+      }
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message
+      }
+    }
+  }
+
+  async getAttachByActId(
+    params: getClassifiersContentByIdServiceProps
+  ): Promise<defaultResponse> {
+    try {
+      if (params.client) {
+        const validation = await this.clientProductRepository.getClientProduct({
+          client: params.client,
+          product: 1
+        })
+
+        if (!validation || validation.idproduto !== 1) {
+          return {
+            success: false,
+            message: "Não Autorizado."
+          }
+        }
+
+        const attachment = this.attachmentRepository.getAttachByActId({
+          acts: params.id
+        })
+
+        return {
+          success: true,
+          data: attachment
+        }
+      } else {
+        return {
+          success: true,
+          data: {}
         }
       }
     } catch (error: any) {

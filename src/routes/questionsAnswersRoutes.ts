@@ -21,7 +21,7 @@ questionsAnswersRoute.get(
     handle: async (req, res, next) => {
       res.status(200).json(
         await questionsAnswersController.questionsAnswersContent({
-          limit: req.query.limit ? +req.query.limit : 10,
+          limit: req.query.limit ? +req.query.limit : 12,
           page: req.query.page ? +req.query.page : 0
         })
       )

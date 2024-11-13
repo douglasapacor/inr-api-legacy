@@ -1,4 +1,4 @@
-import ClientProductRepository from "../repositories/ClientProduct"
+// import ClientProductRepository from "../repositories/ClientProduct"
 import SupplementsRepository from "../repositories/Supplements"
 import TemasRepository from "../repositories/Temas"
 import { supplementsByIdServiceProps } from "../schemas/supplementsById"
@@ -55,8 +55,7 @@ export default class SupplementsService {
           tipo: "supplements",
           idtema: response[i].idtema,
           titulo: response[i].titulo,
-          datacad: response[i].datacad,
-          datacad_fmt: response[i].datacad_fmt
+          datacad: response[i].datacad_fmt
         })
       }
 
