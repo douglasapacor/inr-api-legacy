@@ -95,6 +95,9 @@ export default class ClassifiersService {
 
       if (!classifier) throw new Error("Classificador não encontrado.")
 
+      let response: any = {}
+      response.ids = {}
+
       const bars = await this.barsRepository.getBarByClassifiersId({
         classifiersid: params.id
       })
@@ -178,8 +181,20 @@ export default class ClassifiersService {
                       id: act.idato,
                       titulo: act.titulo,
                       ancora: act.ancora,
+                      datacad: act.datacad,
+                      secao: act.secao,
                       anexos: anexosArray
                     })
+
+                    response.ids[act.idato] = {
+                      secao: null,
+                      especie: null,
+                      numero: null,
+                      vara: null,
+                      comarca: null,
+                      texto: null,
+                      loading: false
+                    }
                   }
                 }
 
@@ -202,187 +217,14 @@ export default class ClassifiersService {
         barraArray.push({
           id: bar.idbarra,
           titulo: bar.titulo,
+          cor: bar.cor,
           orgao: orgaoArray
         })
       }
 
       return {
         success: true,
-        data: { ...classifier, barra: barraArray }
-      }
-    } catch (error: any) {
-      return {
-        success: false,
-        message: error.message
-      }
-    }
-  }
-
-  async getBarsByClassifierId(
-    params: getClassifiersContentByIdServiceProps
-  ): Promise<defaultResponse> {
-    try {
-      if (params.client) {
-        const validation = await this.clientProductRepository.getClientProduct({
-          client: params.client,
-          product: 1
-        })
-
-        if (!validation || validation.idproduto !== 1) {
-          return {
-            success: false,
-            message: "Não Autorizado."
-          }
-        }
-
-        const bars = await this.barsRepository.getBarByClassifiersId({
-          classifiersid: params.id
-        })
-
-        if (bars.length <= 0)
-          throw new Error("Erro ao selecionar barra do classificador.")
-
-        const transporter = []
-
-        for (let i = 0; i < bars.length; i++) {
-          transporter.push({
-            idbarra: bars[i].idbarra,
-            titulo: bars[i].titulo,
-            img: bars[i].img,
-            cor: bars[i].cor,
-            ordem: bars[i].ordem
-          })
-        }
-
-        return {
-          success: true,
-          data: transporter
-        }
-      } else {
-        return {
-          success: true,
-          data: {}
-        }
-      }
-    } catch (error: any) {
-      return {
-        success: false,
-        message: error.message
-      }
-    }
-  }
-
-  async getOrgansByBarId(
-    params: getClassifiersContentByIdServiceProps
-  ): Promise<defaultResponse> {
-    try {
-      if (params.client) {
-        const validation = await this.clientProductRepository.getClientProduct({
-          client: params.client,
-          product: 1
-        })
-
-        if (!validation || validation.idproduto !== 1) {
-          return {
-            success: false,
-            message: "Não Autorizado."
-          }
-        }
-
-        const organs = await this.organRepository.getOrganByBar({
-          bars: params.id
-        })
-
-        console.log(organs)
-
-        return {
-          success: true,
-          data: organs
-        }
-      } else {
-        return {
-          success: true,
-          data: {}
-        }
-      }
-    } catch (error: any) {
-      return {
-        success: false,
-        message: error.message
-      }
-    }
-  }
-
-  async getDepartamentByOrganId(
-    params: getClassifiersContentByIdServiceProps
-  ): Promise<defaultResponse> {
-    try {
-      if (params.client) {
-        const validation = await this.clientProductRepository.getClientProduct({
-          client: params.client,
-          product: 1
-        })
-
-        if (!validation || validation.idproduto !== 1) {
-          return {
-            success: false,
-            message: "Não Autorizado."
-          }
-        }
-
-        const departament =
-          await this.departamentRepository.getDepartamentByOrgan({
-            organ: params.id
-          })
-
-        return {
-          success: true,
-          data: departament
-        }
-      } else {
-        return {
-          success: true,
-          data: {}
-        }
-      }
-    } catch (error: any) {
-      return {
-        success: false,
-        message: error.message
-      }
-    }
-  }
-
-  async getActsByDepartamentId(
-    params: getClassifiersContentByIdServiceProps
-  ): Promise<defaultResponse> {
-    try {
-      if (params.client) {
-        const validation = await this.clientProductRepository.getClientProduct({
-          client: params.client,
-          product: 1
-        })
-
-        if (!validation || validation.idproduto !== 1) {
-          return {
-            success: false,
-            message: "Não Autorizado."
-          }
-        }
-
-        const departament = await this.actsRepository.getActsByDepartamentId({
-          departament: params.id
-        })
-
-        return {
-          success: true,
-          data: departament
-        }
-      } else {
-        return {
-          success: true,
-          data: {}
-        }
+        data: { ...response, barra: barraArray }
       }
     } catch (error: any) {
       return {
@@ -417,46 +259,7 @@ export default class ClassifiersService {
 
         return {
           success: true,
-          data: act.texto
-        }
-      } else {
-        return {
-          success: true,
-          data: {}
-        }
-      }
-    } catch (error: any) {
-      return {
-        success: false,
-        message: error.message
-      }
-    }
-  }
-
-  async getAttachByActId(
-    params: getClassifiersContentByIdServiceProps
-  ): Promise<defaultResponse> {
-    try {
-      if (params.client) {
-        const validation = await this.clientProductRepository.getClientProduct({
-          client: params.client,
-          product: 1
-        })
-
-        if (!validation || validation.idproduto !== 1) {
-          return {
-            success: false,
-            message: "Não Autorizado."
-          }
-        }
-
-        const attachment = this.attachmentRepository.getAttachByActId({
-          acts: params.id
-        })
-
-        return {
-          success: true,
-          data: attachment
+          data: act
         }
       } else {
         return {

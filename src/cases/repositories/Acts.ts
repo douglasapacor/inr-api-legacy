@@ -66,10 +66,20 @@ export default class ActsRepository extends Repository {
   }
 
   async getActText(params: { act: number }): Promise<{
+    secao: string
+    especie: string
+    numero: string
+    vara: string
+    comarca: string
     texto: string
   } | null> {
     try {
       return await this.procedure<{
+        secao: string
+        especie: string
+        numero: string
+        vara: string
+        comarca: string
         texto: string
       }>("get_acts_text", `'${params.act}'`)
     } catch (error: any) {

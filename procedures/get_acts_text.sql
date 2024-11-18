@@ -6,6 +6,11 @@ CREATE PROCEDURE get_acts_text (
 )
 BEGIN
   SELECT
+      secao,
+      especie,
+      numero,
+      vara,
+      comarca,
       texto
     FROM
       ato
