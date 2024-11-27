@@ -22,4 +22,28 @@ export default class BarRepository extends Repository {
       throw new Error(`bar -:${error.message}`)
     }
   }
+
+  async getBarPreviousActs(params: { idAto: number }): Promise<
+    {
+      idanexo: number
+      idato: number
+      barra_titulo: string
+      img: string
+      cor: string
+      titulo: string
+    }[]
+  > {
+    try {
+      return await this.many<{
+        idanexo: number
+        idato: number
+        barra_titulo: string
+        img: string
+        cor: string
+        titulo: string
+      }>("atos_anteriores_barras", `${params.idAto}`)
+    } catch (error: any) {
+      throw new Error(`bar -:${error.message}`)
+    }
+  }
 }

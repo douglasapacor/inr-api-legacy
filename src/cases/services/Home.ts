@@ -1,3 +1,4 @@
+import AdvertisingRepository from "../repositories/advertising"
 import type BannerRepository from "../repositories/Banner"
 import type HomeRepository from "../repositories/Home"
 import type LinkRepository from "../repositories/Link"
@@ -7,7 +8,8 @@ export default class HomeService {
   constructor(
     private bannerRepository: BannerRepository,
     private linkRepository: LinkRepository,
-    private homeRepository: HomeRepository
+    private homeRepository: HomeRepository,
+    private advertisingRepository: AdvertisingRepository
   ) {}
 
   async homeContent(): Promise<defaultResponse> {
@@ -299,6 +301,28 @@ export default class HomeService {
               }
             }
             break
+          case "HT":
+            dataTransporter = await this.homeRepository.getHT(list[i][1])
+
+            for (let y = 0; y < links.length; y++) {
+              for (let k = 0; k < dataTransporter.length; k++) {
+                if (
+                  links[y].tipo === "HT" &&
+                  links[y].id === dataTransporter[k].id
+                ) {
+                  links[y].tipo = "ht"
+                  links[y].label = "Histórias do Ofício"
+                  if (!links[y].content) links[y].content = []
+
+                  dataTransporter[
+                    k
+                  ].img = `https://inrpublicacoes.com.br/sistema/img_up/${dataTransporter[k].img}`
+
+                  links[y].content.push(dataTransporter[k])
+                }
+              }
+            }
+            break
         }
       }
 
@@ -310,11 +334,14 @@ export default class HomeService {
         ].img = `https://inrpublicacoes.com.br/site/banners/${banners[p].img}`
       }
 
+      const publicidade = await this.advertisingRepository.getAdvertising()
+
       return {
         success: true,
         data: {
           banners,
-          links
+          links,
+          publicidade
         }
       }
     } catch (error: any) {

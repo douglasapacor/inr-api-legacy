@@ -37,7 +37,6 @@ classifiersRoute.get(
           state: req.query.acronym as "SP" | "PR" | "RS"
         })
       )
-      next()
     },
     settings: {
       level: "free"
@@ -56,7 +55,6 @@ classifiersRoute.get(
           page: req.query.page ? +req.query.page : 0
         })
       )
-      next()
     },
     settings: {
       level: "free"
@@ -73,7 +71,6 @@ classifiersRoute.get(
           id: +req.params.id
         })
       )
-      next()
     },
     settings: {
       level: "free"
@@ -91,10 +88,37 @@ classifiersRoute.get(
           client: req.user ? req.user.idcliente : null
         })
       )
-      next()
     },
     settings: {
       level: "full"
+    }
+  })
+)
+
+classifiersRoute.get(
+  "/previous-acts",
+  wrapper({
+    handle: async (req, res, next) => {
+      res.status(200).json(await classifiersController.getPreviousActs())
+    },
+    settings: {
+      level: "free"
+    }
+  })
+)
+
+classifiersRoute.get(
+  "/previous-bars",
+  wrapper({
+    handle: async (req, res) => {
+      res.status(200).json(
+        await classifiersController.getBarPreviousActs({
+          idAto: req.query.idAto ? +req.query.idAto : 0
+        })
+      )
+    },
+    settings: {
+      level: "free"
     }
   })
 )

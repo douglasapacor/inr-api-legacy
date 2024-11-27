@@ -176,4 +176,22 @@ export default class HomeRepository extends Repository {
       throw new Error(error.message)
     }
   }
+
+  async getHT(itens: number[]): Promise<
+    {
+      id: number
+      titulo: string
+      img: string
+    }[]
+  > {
+    try {
+      return await this.many<{
+        id: number
+        titulo: string
+        img: string
+      }>("get_home_ht", `'${itens.toString()}'`)
+    } catch (error: any) {
+      throw new Error(error.message)
+    }
+  }
 }

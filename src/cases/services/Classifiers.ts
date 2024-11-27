@@ -11,6 +11,7 @@ import { getClassifiersByStateIdServiceProps } from "../schemas/getClassifiersBy
 import { stateByTitleServiceProps } from "../schemas/stateByTitle"
 import { defaultResponse } from "../types"
 import { getClassifiersContentByIdServiceProps } from "../schemas/getClassifiersContentById"
+import { getBarPreviousActsByActIdServiceProps } from "../schemas/getBarPreviousActsByActId"
 
 export default class ClassifiersService {
   constructor(
@@ -266,6 +267,39 @@ export default class ClassifiersService {
           success: true,
           data: {}
         }
+      }
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message
+      }
+    }
+  }
+
+  async getPreviousActs(): Promise<defaultResponse> {
+    try {
+      const actsList = await this.actsRepository.getAllPreviousActs()
+      return {
+        success: true,
+        data: actsList
+      }
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message
+      }
+    }
+  }
+
+  async getBarPreviousActs(
+    params: getBarPreviousActsByActIdServiceProps
+  ): Promise<defaultResponse> {
+    try {
+      const barraList = await this.barsRepository.getBarPreviousActs(params)
+
+      return {
+        success: true,
+        data: barraList
       }
     } catch (error: any) {
       return {

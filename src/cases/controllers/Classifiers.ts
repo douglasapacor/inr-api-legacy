@@ -16,6 +16,10 @@ import {
   getClassifiersContentByIdControllerProps,
   getClassifiersContentByIdValidation
 } from "../schemas/getClassifiersContentById"
+import {
+  getBarPreviousActsByActIdControllerProps,
+  getBarPreviousActsByActIdValidation
+} from "../schemas/getBarPreviousActsByActId"
 
 export default class ClassifiersController {
   constructor(private classifiersService: ClassifiersService) {}
@@ -91,6 +95,36 @@ export default class ClassifiersController {
         throw new Error(validation.error.issues[0].message)
 
       return await this.classifiersService.getActText(validation.data)
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message
+      }
+    }
+  }
+
+  async getPreviousActs(): Promise<defaultResponse> {
+    try {
+      return await this.classifiersService.getPreviousActs()
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message
+      }
+    }
+  }
+
+  async getBarPreviousActs(
+    params: getBarPreviousActsByActIdControllerProps
+  ): Promise<defaultResponse> {
+    try {
+      const validation =
+        await getBarPreviousActsByActIdValidation.safeParseAsync(params)
+
+      if (!validation.success)
+        throw new Error(validation.error.issues[0].message)
+
+      return await this.classifiersService.getBarPreviousActs(validation.data)
     } catch (error: any) {
       return {
         success: false,

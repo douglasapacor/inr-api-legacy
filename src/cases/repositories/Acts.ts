@@ -86,4 +86,22 @@ export default class ActsRepository extends Repository {
       throw new Error(`act -: ${error.message}`)
     }
   }
+
+  async getAllPreviousActs(): Promise<
+    {
+      idato: number
+      tipo: string
+      ano: number
+    }[]
+  > {
+    try {
+      return await this.many<{
+        idato: number
+        tipo: string
+        ano: number
+      }>("get_all_previous_acts")
+    } catch (error: any) {
+      throw new Error(`repository -: ${error.message}`)
+    }
+  }
 }
