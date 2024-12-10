@@ -351,4 +351,21 @@ export default class HomeService {
       }
     }
   }
+
+  async curriculumContent(): Promise<defaultResponse> {
+    try {
+      const data = await this.homeRepository.getCurriculum([1, 2, 3])
+
+      return {
+        success: true,
+        data,
+        message: ""
+      }
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message
+      }
+    }
+  }
 }

@@ -14,4 +14,15 @@ export default class HomeController {
       }
     }
   }
+
+  async curriculumContent(): Promise<defaultResponse> {
+    try {
+      return await this.homeService.curriculumContent()
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message
+      }
+    }
+  }
 }

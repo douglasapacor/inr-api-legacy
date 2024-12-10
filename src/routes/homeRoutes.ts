@@ -24,7 +24,18 @@ homeRoute.get(
   wrapper({
     handle: async (req, res, next) => {
       res.status(200).json(await homeController.homeContent())
-      next()
+    },
+    settings: {
+      level: "free"
+    }
+  })
+)
+
+homeRoute.get(
+  "/curriculum",
+  wrapper({
+    handle: async (req, res, next) => {
+      res.status(200).json(await homeController.curriculumContent())
     },
     settings: {
       level: "free"

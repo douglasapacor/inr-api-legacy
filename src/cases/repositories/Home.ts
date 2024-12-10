@@ -194,4 +194,19 @@ export default class HomeRepository extends Repository {
       throw new Error(error.message)
     }
   }
+
+  async getCurriculum(
+    ids: number[]
+  ): Promise<{ id: number; nome: string; img: string; conteudo: string }[]> {
+    try {
+      return await this.many<{
+        id: number
+        nome: string
+        img: string
+        conteudo: string
+      }>("get_curriculum", `'${ids.toString()}'`)
+    } catch (error: any) {
+      throw new Error(error.message)
+    }
+  }
 }
