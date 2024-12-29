@@ -12,7 +12,6 @@ declare namespace Express {
       idgrupo_site: number
       admin: string
       autorizacao_trabalhista: string
-      logged: boolean
     }
   }
 }
