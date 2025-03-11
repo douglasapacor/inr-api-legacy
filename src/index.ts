@@ -1,8 +1,8 @@
+import bodyParser from "body-parser"
+import cors from "cors"
 import "dotenv/config"
 import express from "express"
 import http from "http"
-import cors from "cors"
-import bodyParser from "body-parser"
 import application from "./config/application"
 import router from "./router"
 const app = express()
@@ -17,13 +17,17 @@ app.use((req, _, next) => {
     method: req.method,
     start: new Date().getMilliseconds()
   }
+
   next()
 })
 
 app.use("/", router)
 
 httpServer.listen(application.port, async () => {
-  console.log(
-    `Api "${application.name}" running on: ${application.host}:${application.port}`
-  )
+  let finalHost =
+    application.env === "dev"
+      ? `${application.host}:${application.port}`
+      : `${application.host}`
+
+  console.log(`Api ${application.name} running on: ${finalHost}`)
 })
