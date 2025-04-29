@@ -1,15 +1,17 @@
 import express from "express"
-import wrapper from "../lib/wrapper"
-import ClassifiersService from "../cases/services/Classifiers"
 import ClassifiersController from "../cases/controllers/Classifiers"
-import ClassifiersRepository from "../cases/repositories/Classifiers"
-import ClientProductRepository from "../cases/repositories/ClientProduct"
-import BarRepository from "../cases/repositories/Bar"
-import OrganRepository from "../cases/repositories/Organ"
-import DepartamentRepository from "../cases/repositories/Departament"
 import ActsRepository from "../cases/repositories/Acts"
 import AttachmentRepository from "../cases/repositories/Attachment"
+import BarRepository from "../cases/repositories/Bar"
+import ClassifiersRepository from "../cases/repositories/Classifiers"
+import ClientProductRepository from "../cases/repositories/ClientProduct"
+import DepartamentRepository from "../cases/repositories/Departament"
+import OrganRepository from "../cases/repositories/Organ"
+import ClassifiersService from "../cases/services/Classifiers"
+import wrapper from "../lib/wrapper"
+
 const classifiersRoute = express.Router()
+
 const classifiersRepository = new ClassifiersRepository()
 const clientProductRepository = new ClientProductRepository()
 const barRepository = new BarRepository()
